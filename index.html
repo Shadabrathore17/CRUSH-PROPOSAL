@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>For My Love</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(120deg, #ff69b4, #ff1493);
+            font-family: 'Dancing Script', cursive;
+            margin: 0;
+            position: relative;
+            padding: 50px 0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            max-width: 600px;
+            animation: float 3s infinite ease-in-out;
+            border: 3px solid #ff69b4;
+            margin: 20px auto;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        h1 {
+            color: #ff1493;
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            font-family: 'Dancing Script', cursive;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #ff69b4; }
+            50% { text-shadow: 0 0 20px #ff1493, 0 0 30px #ff69b4; }
+            100% { text-shadow: 0 0 5px #ff69b4; }
+        }
+        p {
+            font-size: 1.8em;
+            color: #444;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-family: 'Dancing Script', cursive;
+        }
+        .buttons {
+            margin-top: 40px;
+            position: relative;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        .yes-btn {
+            padding: 20px 60px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 5px 15px rgba(255,20,147,0.4);
+            font-family: 'Dancing Script', cursive;
+        }
+        .yes-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(255,20,147,0.6);
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+        }
+        .no-btn {
+            padding: 20px 60px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.4s;
+            position: relative;
+            font-family: 'Dancing Script', cursive;
+            cursor: pointer;
+        }
+        .no-btn:hover {
+            animation: moveAway 0.5s infinite;
+        }
+        @keyframes moveAway {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(100px, -50px); }
+            50% { transform: translate(-100px, 50px); }
+            75% { transform: translate(50px, 100px); }
+            100% { transform: translate(-50px, -100px); }
+        }
+        .shayari {
+            display: none;
+            margin-top: 40px;
+            font-style: italic;
+            color: #ff1493;
+            font-size: 1.5em;
+            line-height: 2;
+            padding: 30px;
+            border: 3px dashed #ff69b4;
+            border-radius: 20px;
+            background: rgba(255,105,180,0.1);
+            animation: borderGlow 2s infinite;
+        }
+        @keyframes borderGlow {
+            0% { border-color: #ff69b4; }
+            50% { border-color: #ff1493; }
+            100% { border-color: #ff69b4; }
+        }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .video-container {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -1;
+            transition: all 0.5s;
+        }
+        .video-container.left {
+            left: 100px;
+            transform: translateY(-50%) rotate(-5deg);
+        }
+        .video-container.right {
+            right: 100px;
+            transform: translateY(-50%) rotate(5deg);
+        }
+        .video-container.top {
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .video {
+            width: 320px;
+            height: 240px;
+            border-radius: 20px;
+            margin: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: white;
+            padding: 12px;
+            transition: all 0.3s;
+            border: 3px solid #ff69b4;
+            cursor: pointer;
+        }
+        .video:hover {
+            transform: scale(1.1) rotate(-3deg);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal-content video {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            border: 5px solid #ff69b4;
+        }
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 105, 180, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="video-container top" id="topVideo">
+        <video class="video" onclick="openModal(this.src)" controls autoplay loop muted playsinline>
+            <source src="" type="video/mp4">
+            <source src="" type="video/webm">
+            <source src="" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="video-container left" id="leftVideo">
+        <video class="video" onclick="openModal(this.src)" controls autoplay loop muted playsinline>
+            <source src="" type="video/mp4">
+            <source src="" type="video/webm">
+            <source src="" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="container">
+        <h1>Bhavna (Crush)❤️</h1>
+        <p>From a month ago when I first saw you, you caught my eye.<br>Would you like to give me a chance?</p>
+        <div class="buttons">
+            <button class="yes-btn" onclick="showShayari()">Yes ❤️</button>
+            <button class="no-btn" onmouseover="moveButton(this)">No 💔</button>
+        </div>
+        <div id="shayari" class="shayari">
+            "Bhavna, aapko dekhte hi dil ne kaha,<br>
+            Yeh junoon sa kyun hai naya.<br>
+            College ke corridors mein jab bhi aap guzre,<br>
+            Mere dil ki dhadkan tez ho jaye.<br><br>
+            Aapki muskurahat, aapki woh ada Bhavna,<br>
+            Kar gaye mujhe aapka deewana.<br>
+            Main senior hoon, aap junior hai meri,<br>
+            Par dil ke mamle mein hum dono barabar hai Bhavna.❤️"
+            OR SUNO <br>
+            "Scissors leke thodi ghumuga yrr ab mai" <br>
+             I LIKE YOU BHAVNA❤️
+        </div>
+    </div>
+    <div class="video-container right" id="rightVideo">
+        <video class="video" onclick="openModal(this.src)" controls autoplay loop muted playsinline>
+            <source src="" type="video/mp4">
+            <source src="" type="video/webm">
+            <source src="" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div id="videoModal" class="modal" onclick="closeModal()">
+        <div class="modal-content">
+            <video id="modalVideo" controls loop playsinline>
+                <source src="" type="video/mp4">
+                <source src="" type="video/webm">
+                <source src="" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        function showShayari() {
+            document.getElementById('shayari').style.display = 'block';
+            document.getElementById('leftVideo').style.display = 'block';
+            document.getElementById('rightVideo').style.display = 'block';
+            document.getElementById('topVideo').style.display = 'block';
+            createHearts();
+            playBackgroundMusic();
+            
+            // Ensure videos are playing
+            document.querySelectorAll('video').forEach(video => {
+                video.play().catch(function(error) {
+                    console.log("Video play failed:", error);
+                });
+            });
+        }
+
+        function moveButton(button) {
+            const x = Math.random() * (window.innerWidth - button.offsetWidth);
+            const y = Math.random() * (window.innerHeight - button.offsetHeight);
+            button.style.position = 'fixed';
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+        }
+
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for(let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+                heart.style.fontSize = Math.random() * 30 + 15 + 'px';
+                heart.style.opacity = Math.random() * 0.5 + 0.5;
+                heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        function openModal(videoSrc) {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            modal.style.display = 'flex';
+            modalVideo.src = videoSrc;
+            modalVideo.play().catch(function(error) {
+                console.log("Modal video play failed:", error);
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            modalVideo.pause();
+            modal.style.display = 'none';
+        }
+
+        window.onload = function() {
+            // Add subtle floating animation to videos
+            document.querySelectorAll('.video').forEach((video, index) => {
+                video.style.animation = `float ${2 + index * 0.5}s infinite ease-in-out ${index * 0.5}s`;
+                // Ensure videos are playing
+                video.play().catch(function(error) {
+                    console.log("Video play failed:", error);
+                });
+            });
+            // Show videos on page load
+            document.getElementById('leftVideo').style.display = 'block';
+            document.getElementById('rightVideo').style.display = 'block';
+            document.getElementById('topVideo').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+<footer class="footer" style="position: fixed; bottom: 0; right: 0; padding: 10px; color: black;">
+    <p>© Created by Shadab Rathore</p>
+</footer>
